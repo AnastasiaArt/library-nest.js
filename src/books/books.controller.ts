@@ -6,14 +6,13 @@ import {CreateBookDto} from "./dto/cteateBookDto";
 @Controller('books')
 export class BooksController {
 constructor(private booksService: BooksService) {}
-    // получение всех книг
     @Get()
-    async findAll(): Promise<Book[]> {
+    findAll(): Promise<Book[]> {
         return this.booksService.getBooks();
     }
 
     @Post()
-    async createBook(@Body() createBookDto: CreateBookDto): Promise<Book> {
+    createBook(@Body() createBookDto: CreateBookDto): Promise<Book> {
         return this.booksService.createBook(createBookDto)
     }
 
