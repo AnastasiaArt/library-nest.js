@@ -1,9 +1,11 @@
-import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, UseInterceptors} from '@nestjs/common';
 import {BooksService} from "./books.service";
 import {Book} from "./interfaces/book";
 import {CreateBookDto} from "./dto/cteateBookDto";
+import {TransformResponseInterceptor} from "../common/transform-response.interceptor";
 
 @Controller('books')
+@UseInterceptors(TransformResponseInterceptor)
 export class BooksController {
 constructor(private booksService: BooksService) {}
     @Get()

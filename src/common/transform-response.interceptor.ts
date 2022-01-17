@@ -19,10 +19,10 @@ export class TransformResponseInterceptor<T> implements NestInterceptor<T, Respo
   intercept(context: ExecutionContext, next: CallHandler): Observable<Response<T>> {
     return next.handle().pipe(
         map(data => ({ status: STATUS.SUCCESS, data })),
-        catchError((err) => of({
+        catchError((err) => throwError(of({
               status: STATUS.ERROR,
               data: err
-          })),
+          }))),
     );
   }
 }
