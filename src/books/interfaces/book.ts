@@ -8,10 +8,3 @@ export interface Book {
     favorite?: string;
     fileCover?: string;
 }
-
-export class CreateBookDto {
-    title: string;
-    description: string;
-    authors: string;
-    fileName: string;
-}
