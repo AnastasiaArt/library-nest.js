@@ -1,8 +1,10 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, UseInterceptors} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, UseInterceptors, UsePipes} from '@nestjs/common';
 import {BooksService} from "./books.service";
 import {Book} from "./interfaces/book";
 import {CreateBookDto} from "./dto/cteateBookDto";
-import {TransformResponseInterceptor} from "../common/transform-response.interceptor";
+import {TransformResponseInterceptor} from "../common/interceptors/transform-response.interceptor";
+import {createBookSchema} from "../common/pipes/joi/createBook.schema";
+import {JoiValidationPipe} from "../common/pipes/joi/validate.pipe";
 
 @Controller('books')
 @UseInterceptors(TransformResponseInterceptor)
@@ -14,6 +16,7 @@ constructor(private booksService: BooksService) {}
     }
 
     @Post()
+    @UsePipes(new JoiValidationPipe(createBookSchema))
     createBook(@Body() createBookDto: CreateBookDto): Promise<Book> {
         return this.booksService.createBook(createBookDto)
     }
