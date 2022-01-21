@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { BooksModule } from './books/books.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import {ConfigModule, ConfigService} from "@nestjs/config";
+import { AuthModule } from './users/auth.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
               uri: configService.get<string>('MONGO_CONNECTION_URL'),
           }),
           inject: [ConfigService],
-      })
+      }),
+      AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
