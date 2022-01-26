@@ -1,3 +1,3 @@
-import {Book} from "../interfaces/book";
+import {BookComment} from "../../book-comment/interfaces/bookComment";
 
-export class CreateBookDto implements Partial<Book> {}
+export class CreateBookDto implements Partial<BookComment> {}
