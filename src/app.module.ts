@@ -7,7 +7,6 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { BookCommentModule } from './book-comment/book-comment.module';
-import { BookCommentGateway } from './book-comment/book-comment.gateway';
 
 @Module({
   imports: [
@@ -24,6 +23,6 @@ import { BookCommentGateway } from './book-comment/book-comment.gateway';
       BookCommentModule,
   ],
   controllers: [AppController],
-  providers: [AppService, BookCommentGateway],
+  providers: [AppService],
 })
 export class AppModule {}
