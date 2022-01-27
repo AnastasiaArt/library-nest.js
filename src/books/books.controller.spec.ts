@@ -1,30 +1,29 @@
 import { INestApplication } from '@nestjs/common';
-import { getModelToken } from '@nestjs/mongoose';
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test} from '@nestjs/testing';
 import * as request from 'supertest';
-import { Book } from './book.model';
 import { BooksController } from './books.controller';
 import { BooksService } from './books.service';
-const book = {
-    _id: '123456789',
-    title: 'title1',
-    description: 'description1',
-    authors: 'authors1',
-    favourite: true,
-    fileCover: 'fileCover1',
-    fileName: 'fileName1',
-    fileBook: 'fileBook1',
-};
-const service = {
-    getAll: jest.fn(),
-    getById: jest.fn(),
-    create: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
-};
 
 describe('BooksController', () => {
     let booksController: BooksController;
+    let app: INestApplication;
+    const book = {
+        _id: '123456789',
+        title: 'title1',
+        description: 'description1',
+        authors: 'authors1',
+        favourite: true,
+        fileCover: 'fileCover1',
+        fileName: 'fileName1',
+        fileBook: 'fileBook1',
+    };
+    const service = {
+        getBooks: jest.fn(),
+        getBook: jest.fn(),
+        createBook: jest.fn(),
+        updateBook: jest.fn(),
+        deleteBook: jest.fn(),
+    };
 
     beforeEach(async () => {
         const moduleRef = await Test.createTestingModule({
@@ -36,23 +35,51 @@ describe('BooksController', () => {
                 },
             ],
         }).compile();
-
         booksController = moduleRef.get<BooksController>(BooksController);
+        app = moduleRef.createNestApplication();
+        await app.init();
     });
 
-    it('addBook', async () => {
-        expect(await booksController.create(book())).toEqual(book());
+    it('/GET books', () => {
+        return request(app.getHttpServer())
+            .get('/books')
+            .expect(200)
+            .expect(service.getBooks());
     });
 
-    it('getAllBooks', async () => {
-        expect(await booksController.getAllBooks()).toEqual([
-            book(),
-            book(),
-        ]);
+    it('/GET book by id', () => {
+        return request(app.getHttpServer())
+            .get(`/books/${book._id}`)
+            .expect(200)
+            .expect(service.getBook(book._id));
     });
 
-    it('getBookById', async () => {
-        expect(await booksController.getBookById('id')).toEqual(book());
+    it('/POST create book', () => {
+        return request(app.getHttpServer())
+            .post('/books')
+            .expect(200)
+            .expect(service.createBook(book));
     });
-});
+
+    it('/PUT update book', () => {
+        return request(app.getHttpServer())
+            .put(`/books/${book._id}`)
+            .expect(200)
+            .expect(service.updateBook(book._id, book));
+    });
+
+    it('/DELETE delete book', () => {
+        return request(app.getHttpServer())
+            .delete(`/books/${book._id}`)
+            .expect(200)
+            .expect(service.deleteBook(book._id));
+    });
+
+    it('should be defined', () => {
+        expect(booksController).toBeDefined();
+    });
+
+    afterAll(async () => {
+        await app.close();
+    });
 });
