@@ -24,7 +24,8 @@ export class BookCommentGateway {
                 return {event: 'addComment', res}
             }),
             catchError(error => {
-                return throw new WsException('Invalid credentials.')})
+                return throwError(error);
+            })
         );
     }
 
@@ -35,7 +36,7 @@ export class BookCommentGateway {
                 return {event: 'findAllComments', data: res};
             }),
             catchError(error => {
-                return throw new WsException('Invalid credentials.')
+                return throwError(error);
             })
         );
     }
