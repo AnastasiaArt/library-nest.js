@@ -1,16 +1,17 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseInterceptors, UsePipes} from '@nestjs/common';
-import {BooksService} from "./books.service";
+import {Body, Controller, Delete, Get, Param, Post, Put, Req, UseInterceptors, UsePipes} from '@nestjs/common';
+// import {MongooseBooksService} from "./mongoose/books.service";
 import {Book} from "./interfaces/book";
 import {CreateBookDto} from "./dto/cteateBookDto";
 import {TransformResponseInterceptor} from "../common/interceptors/transform-response.interceptor";
 import {createBookSchema} from "../common/pipes/joi/createBook.schema";
 import {JoiValidationPipe} from "../common/pipes/joi/validate.pipe";
-import { Request } from 'express';
+import {Request} from 'express';
+import {FirebaseBooksService} from "./firebase-books/books.service";
 
 @Controller('books')
 @UseInterceptors(TransformResponseInterceptor)
 export class BooksController {
-constructor(private booksService: BooksService) {}
+constructor(private booksService: FirebaseBooksService) {}
     @Get()
     findAll(): Promise<Book[]> {
         return this.booksService.getBooks();
@@ -23,9 +24,7 @@ constructor(private booksService: BooksService) {}
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string, @Req() request: Request, @Query() query: QueryDto): Promise<Book> {
-        console.log(request)
-        console.log(query)
+    findOne(@Param('id') id: string, @Req() request: Request): Promise<Book> {
         return this.booksService.getBook(id);
     }
 
