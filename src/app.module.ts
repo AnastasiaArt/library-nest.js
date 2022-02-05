@@ -6,6 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import {FirebaseModule} from "./firebase/firebase.module";
 // import { BookCommentModule } from './book-comment/book-comment.module';
 
 @Module({
@@ -21,6 +22,7 @@ import { AuthModule } from './auth/auth.module';
           }),
           inject: [ConfigService],
       }),
+      FirebaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],

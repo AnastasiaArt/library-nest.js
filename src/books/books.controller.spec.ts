@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { Test} from '@nestjs/testing';
 import * as request from 'supertest';
 import { BooksController } from './books.controller';
-import { BooksService } from './books.service';
+import { BooksService } from './mongoose/books.service';
 
 describe('BooksController', () => {
     let booksController: BooksController;
