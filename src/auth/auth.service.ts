@@ -7,7 +7,7 @@ import {UsersService} from "../users/users.service";
 
 @Injectable()
 export class AuthService {
-    constructor(private userService: UsersService,private readonly jwtService: JwtService,) {}
+    constructor(private userService: UsersService, private readonly jwtService: JwtService,) {}
     async validateUser(signInDto: SignInDto): Promise<any> {
         const user = await this.userService.findUser(signInDto);
         if (user && createHash(user.password) === createHash(signInDto.password)) {

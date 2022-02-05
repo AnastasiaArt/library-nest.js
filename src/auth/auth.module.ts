@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
+import {forwardRef, Module} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import {UsersModule} from "../users/users.module";
 
 @Module({
-  imports: [PassportModule,JwtModule.register({secret:process.env.jwt_secret_key,   }), ],
+  imports: [forwardRef(() => UsersModule),PassportModule,JwtModule.register({secret:process.env.jwt_secret_key,   }), ],
   providers: [AuthService],
   exports: [AuthService],
 })

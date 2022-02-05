@@ -1,10 +1,11 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, UseInterceptors, UsePipes} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseInterceptors, UsePipes} from '@nestjs/common';
 import {BooksService} from "./books.service";
 import {Book} from "./interfaces/book";
 import {CreateBookDto} from "./dto/cteateBookDto";
 import {TransformResponseInterceptor} from "../common/interceptors/transform-response.interceptor";
 import {createBookSchema} from "../common/pipes/joi/createBook.schema";
 import {JoiValidationPipe} from "../common/pipes/joi/validate.pipe";
+import { Request } from 'express';
 
 @Controller('books')
 @UseInterceptors(TransformResponseInterceptor)
@@ -22,7 +23,9 @@ constructor(private booksService: BooksService) {}
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string): Promise<Book> {
+    findOne(@Param('id') id: string, @Req() request: Request, @Query() query: QueryDto): Promise<Book> {
+        console.log(request)
+        console.log(query)
         return this.booksService.getBook(id);
     }
 
